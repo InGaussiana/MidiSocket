@@ -11,11 +11,13 @@
 	export let playing = true;
 
 	const amp = writable<GainNode | null>(null);
+	const stopTime = writable<number>(releaseTime);
 
 	const audioCtx = getContext<SvelteStore<AudioContext>>('audioCtx');
 	const destination = getContext<SvelteStore<AudioNode>>('destination');
 
 	setContext('destination', amp);
+	setContext('releaseTime', stopTime);
 
 	$: browser && $audioCtx && $destination && start();
 	$: playing ? start() : stop();
@@ -26,7 +28,7 @@
 		const now = $audioCtx.currentTime;
 		$amp = $audioCtx.createGain();
 		$amp.gain.setValueAtTime(0, 0);
-		$amp.gain.linearRampToValueAtTime(1, now + attackTime);
+		$amp.gain.linearRampToValueAtTime(volume, now + attackTime);
 		$amp.gain.linearRampToValueAtTime(volume, now + attackTime + decayTime);
 		if (audioParam) {
 			// @ts-ignore

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { getContext, setContext } from 'svelte';
+	import { getContext, onDestroy, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	export let frequency = 440;
-	export let waveType: 'sawtooth' | 'sine' | 'square' | 'triangle' = 'sine';
+	export let waveType: WaveType = 'sine';
 	export let playing = false;
 	export let audioParam: string | null = null;
 
@@ -11,6 +11,7 @@
 
 	const audioCtx = getContext<SvelteStore<AudioContext>>('audioCtx');
 	const destination = getContext<SvelteStore<GainNode>>('destination');
+	const releaseTime = getContext<SvelteStore<number>>('releaseTime');
 
 	setContext('destination', noteOscillator);
 
@@ -32,12 +33,13 @@
 		$noteOscillator.start();
 	};
 
-	// const stop = () => {
-	// 	if ($noteOscillator) {
-	// 		$noteOscillator.stop();
-	// 		$noteOscillator = null;
-	// 	}
-	// };
+	const stop = () => {
+		if ($noteOscillator) {
+			$noteOscillator.stop($audioCtx.currentTime + $releaseTime);
+		}
+	};
+
+	onDestroy(stop);
 </script>
 
 {#if playing}
