@@ -3,4 +3,6 @@
 	import MidiSocket from '$lib/MidiSocket.svelte';
 </script>
 
-<MidiSocket />
+<div style="height: 80vh">
+	<MidiSocket />
+</div>

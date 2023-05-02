@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { noteToMidi } from './audio/notes';
-	import Amp from '$lib/audio/Amp.svelte';
 	import Piano from '$lib/audio/misc/Piano.svelte';
 
+	export let waveType: WaveType = 'sine';
 	export let chanel = 0;
+	export let vertical = false;
+	export let volume = 0.7;
 
 	$: channel = chanel.toString(16);
 
@@ -27,6 +29,13 @@
 	};
 </script>
 
-<Amp>
-	<Piano showNotation on:keyPressed={handleKeyPressed} on:keyReleased={handleKeyReleased} />
-</Amp>
+<Piano
+	{volume}
+	{vertical}
+	{waveType}
+	showNotation
+	on:keyPressed={handleKeyPressed}
+	on:keyReleased={handleKeyReleased}
+>
+	<slot />
+</Piano>
