@@ -3,10 +3,12 @@
 	import { noteFrequencies } from '../notes';
 	import PianoKey from './PianoKey.svelte';
 
-	export let waveType: 'sawtooth' | 'sine' | 'square' | 'triangle' = 'sine';
-	export let notes = Object.keys(noteFrequencies);
+	export let waveType: WaveType = 'sine';
+	// @ts-ignore
+	export let notes: MusicalNotes[] = Object.keys(noteFrequencies);
 	export let showNotation = false;
 	export let vertical = false;
+	export let volume = 0.7;
 
 	let container: HTMLDivElement;
 
@@ -19,7 +21,7 @@
 
 <div class="piano" class:verticalpiano={vertical} bind:this={container}>
 	{#each notes as note}
-		<PianoKey {note} {waveType} {showNotation} {vertical} on:keyPressed on:keyReleased>
+		<PianoKey {note} {waveType} {showNotation} {volume} {vertical} on:keyPressed on:keyReleased>
 			<slot />
 		</PianoKey>
 	{/each}

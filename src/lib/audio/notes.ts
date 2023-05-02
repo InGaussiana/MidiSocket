@@ -21,7 +21,7 @@ function getNotesFrequencies() {
 	return notesFreq;
 }
 
-function getMidiNotes() {
+function getMidiNotes(): { [x: number]: MusicalNote } {
 	const notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 	const octaves = new Array(7).fill(0).map((_, i) => i + 1);
 
@@ -40,6 +40,7 @@ function getMidiNotes() {
 			return notes;
 		}, {});
 
+	// @ts-ignore
 	return midiNotes;
 }
 
