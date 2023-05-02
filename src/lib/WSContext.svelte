@@ -23,7 +23,8 @@
 			return;
 		}
 
-		ws = new WebSocket(`ws://${window.location.host}`);
+		const protocol = window.location.protocol.includes('https') ? 'wss' : 'ws';
+		ws = new WebSocket(`${protocol}://${window.location.host}`);
 
 		ws.onmessage = ({ data }) => {
 			const parsedData = JSON.parse(data);
